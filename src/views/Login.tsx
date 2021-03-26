@@ -51,4 +51,4 @@ const Login = ({ navigation }) => {
 const style = StyleSheet.create({
   formContainer: { flex: 1, alignItems: 'center', justifyContent: 'center' },
 });
-export default withTheme(Login, 'dark');
+export default Login;
