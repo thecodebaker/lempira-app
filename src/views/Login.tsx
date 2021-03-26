@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import axios, { AxiosResponse } from 'axios';
 import { StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Input, withTheme } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import LoginResponse from '../Types/LoginResponse';
+import { RootStateOrAny, useDispatch } from 'react-redux';
+import { LOGIN } from '../redux/actions';
 
+// @ts-ignore
 const Login = ({ navigation }) => {
-  const user = useSelector((state: RootStateOrAny) => state.authReducer.user);
   const dispatch = useDispatch();
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -16,7 +15,7 @@ const Login = ({ navigation }) => {
       <Input
         label="Tu correo"
         placeholder="ejemplo@lempira.com"
-        leftIcon={{ type: 'Ionicons', name: 'mail-outline' }}
+        leftIcon={{ type: 'ionicon', name: 'mail-outline' }}
         onChangeText={(text) => {
           setEmail(text);
         }}
@@ -25,7 +24,7 @@ const Login = ({ navigation }) => {
         label="Contraseña"
         secureTextEntry
         placeholder="Contraseña"
-        leftIcon={{ type: 'Ionicons', name: 'lock-outline' }}
+        leftIcon={{ type: 'ionicon', name: 'lock-closed-outline' }}
         onChangeText={(text) => {
           setPassword(text);
         }}
@@ -33,19 +32,7 @@ const Login = ({ navigation }) => {
       <Button
         title="Acceder"
         onPress={() => {
-          axios
-            .post('http://192.168.1.6:3001/auth/login', { password, email })
-            .then((resp: AxiosResponse<LoginResponse>) => {
-              dispatch({
-                type: 'SET_USER',
-                payload: {
-                  user: { token: resp.data.token, name: resp.data.name },
-                },
-              });
-            })
-            .catch((err) => {
-              console.error(err);
-            });
+          dispatch(LOGIN(email, password));
         }}
       />
       <TouchableOpacity
