@@ -1,10 +1,16 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, ListItem, Icon } from 'react-native-elements';
+import React, { useCallback, useEffect, useState } from 'react';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  RefreshControl,
+  Alert,
+} from 'react-native';
+import { ListItem, Icon } from 'react-native-elements';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { useColorScheme } from 'react-native-appearance';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { getAccounts } from '../redux/actions';
+import { getAccounts, deleteAccount } from '../redux/thunks/accounts';
 import Account from '../Types/Account';
 import User from '../Types/User';
 
@@ -16,31 +22,69 @@ const Accounts = ({ navigation }) => {
   const accounts: Array<Account> = useSelector(
     (state: RootStateOrAny) => state.accounts.accounts
   );
-
+  const [refreshing, setRefreshing] = useState(false);
+  const signs: any = {
+    HNL: 'L',
+    USD: '$',
+    EUR: '€',
+  };
   useEffect(() => {
     dispatch(getAccounts(user.token));
   }, []);
+
+  const onRefresh = useCallback(() => {
+    dispatch(getAccounts(user.token, setRefreshing));
+  }, []);
+
   return (
     <View style={style.mainContainer}>
-      {accounts.map((account) => (
-        <ListItem key={account.accountId} bottomDivider onPress={() => {}}>
-          <Ionicons
-            name={'cash-outline'}
-            size={32}
-            color={colorScheme === 'dark' ? 'white' : 'gray'}
-          />
-          <ListItem.Content>
-            <ListItem.Title>{account.name}</ListItem.Title>
+      <ScrollView
+        style={style.scrollContainer}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        {accounts.map((account) => (
+          <ListItem
+            key={account.accountId}
+            bottomDivider
+            onPress={() => {}}
+            onLongPress={() => {
+              Alert.alert(
+                'Borrar cuenta',
+                `¿Seguro que querés borrar la cuenta ${account.name}?`,
+                [
+                  {
+                    text: 'Si',
+                    onPress: () => {
+                      dispatch(deleteAccount(user.token, account.accountId));
+                    },
+                  },
+                  { text: 'No' },
+                ]
+              );
+            }}
+          >
+            <Ionicons
+              name={'cash-outline'}
+              size={32}
+              color={colorScheme === 'dark' ? 'white' : 'gray'}
+            />
+            <ListItem.Content>
+              <ListItem.Title>{account.name}</ListItem.Title>
+            </ListItem.Content>
             <ListItem.Subtitle
               style={{
-                color: 'gray',
+                color: account.movement.current < 0 ? '#B34A37' : '#37B94A',
               }}
             >
-              {account.currency}
+              {`${signs[account.currency]} ${account.movement.current.toFixed(
+                2
+              )}`}
             </ListItem.Subtitle>
-          </ListItem.Content>
-        </ListItem>
-      ))}
+          </ListItem>
+        ))}
+      </ScrollView>
       <View style={style.TAB}>
         <Icon
           raised
@@ -60,6 +104,9 @@ const Accounts = ({ navigation }) => {
 };
 
 const style = StyleSheet.create({
+  scrollContainer: {
+    flex: 1,
+  },
   mainContainer: { flex: 1 },
   TAB: {
     position: 'absolute',
