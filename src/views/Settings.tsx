@@ -4,6 +4,7 @@ import { useColorScheme } from 'react-native-appearance';
 import { Avatar, ListItem } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
+import { SIGNOUT } from '../redux/thunks/auth';
 import User from '../Types/User';
 
 const Settings = () => {
@@ -16,15 +17,7 @@ const Settings = () => {
       title: 'Cerrar Sesión',
       icon: 'settings',
       onPress: () => {
-        dispatch({
-          type: 'SET_USER',
-          payload: {
-            user: {
-              token: undefined,
-              name: undefined,
-            },
-          },
-        });
+        dispatch(SIGNOUT());
       },
     },
   ];
