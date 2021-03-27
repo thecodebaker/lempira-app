@@ -36,6 +36,7 @@ const AppContainer = () => {
           />
           <Provider store={myStore}>
             <ThemeProvider
+              useDark={colorScheme === 'dark'}
               theme={colorScheme === 'dark' ? DarkTheme : LightTheme}
             >
               <NavigationContainer
