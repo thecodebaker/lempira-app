@@ -1,13 +1,10 @@
 import { Action } from '../../Types/Action';
 import { SET_ACCOUNTS } from '../actions';
 import Account from '../../Types/Account';
-
-const accountsReducer = (
-  state = {
-    accounts: [],
-  },
-  action: Action<any>
-) => {
+const initialState = {
+  accounts: [],
+};
+const accountsReducer = (state = initialState, action: Action<any>) => {
   switch (action.type) {
     case SET_ACCOUNTS: {
       const { accounts } = action.payload;
