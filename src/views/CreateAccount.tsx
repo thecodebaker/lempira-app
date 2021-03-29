@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { Text, Input, Button } from 'react-native-elements';
+import { Input, Button, Text } from 'react-native-elements';
+import Checkbox from 'expo-checkbox';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { Picker } from '@react-native-picker/picker';
 import { useColorScheme } from 'react-native-appearance';
 import User from '../Types/User';
 import { createAccount } from '../redux/thunks/accounts';
+import validator from 'validator';
 
 // @ts-ignore
 const CreateAccount = ({ navigation }) => {
@@ -14,10 +16,42 @@ const CreateAccount = ({ navigation }) => {
   const user: User = useSelector((state: RootStateOrAny) => state.auth.user);
   const [currency, setCurrency] = useState('HNL');
   const [name, setName] = useState('');
-  const [ammount, setAmmount] = useState('');
+  const [amount, setAmount] = useState('');
+  const [hasMinimum, setHasMinimum] = useState(false);
+  const [minimum, setMinimum] = useState('');
+  const [disabled, setDisabled] = useState(true);
+
+  const shouldShowError = (variable: string) => {
+    switch (variable) {
+      case 'name': {
+        return validator.isEmpty(name);
+      }
+      case 'amount': {
+        return !validator.isEmpty(amount) && !validator.isNumeric(amount);
+      }
+      case 'minimum': {
+        return !validator.isEmpty(minimum) && !validator.isNumeric(minimum);
+      }
+    }
+    return false;
+  };
+  useEffect(() => {
+    setDisabled(
+      (hasMinimum && validator.isEmpty(minimum)) ||
+        validator.isEmpty(amount) ||
+        shouldShowError('name') ||
+        shouldShowError('amount') ||
+        shouldShowError('minimum')
+    );
+  }, [name, amount, hasMinimum, minimum]);
+
   return (
     <View style={style.mainContainer}>
       <Input
+        labelStyle={{
+          color: colorScheme === 'dark' ? 'white' : 'gray',
+        }}
+        label="Nombre de la cuenta"
         value={name}
         onChangeText={(text) => {
           setName(text);
@@ -26,14 +60,25 @@ const CreateAccount = ({ navigation }) => {
         leftIcon={{ type: 'ionicon', name: 'bookmark-outline' }}
       />
       <Input
-        placeholder="Valor inicial"
-        value={`${ammount}`}
+        labelStyle={{
+          color: colorScheme === 'dark' ? 'white' : 'gray',
+        }}
+        label="Balance Inicial"
+        errorStyle={{ color: '#B34A37' }}
+        errorMessage={
+          (shouldShowError('amount') && 'Ingrese un numero valido') || ''
+        }
+        placeholder="Balance inicial"
+        value={amount}
         onChangeText={(text) => {
-          setAmmount(text);
+          setAmount(text.trim());
         }}
         keyboardType="number-pad"
         leftIcon={{ type: 'ionicon', name: 'cash-outline' }}
       />
+      <Text style={{ fontSize: 16, fontWeight: 'bold', marginLeft: 12 }}>
+        Moneda de la cuenta
+      </Text>
       <Picker
         selectedValue={currency}
         onValueChange={(value) => {
@@ -51,16 +96,54 @@ const CreateAccount = ({ navigation }) => {
         <Picker.Item label="Dolar" value="USD" />
         <Picker.Item label="Euro" value="EUR" />
       </Picker>
+      <View style={style.section}>
+        <Checkbox
+          style={style.checkbox}
+          value={hasMinimum}
+          onValueChange={() => {
+            setHasMinimum(!hasMinimum);
+          }}
+        />
+        <Text
+          onPress={() => {
+            setHasMinimum(!hasMinimum);
+          }}
+          style={style.paragraph}
+        >
+          ¿La cuenta tiene balance minimo?
+        </Text>
+      </View>
+      {hasMinimum && (
+        <Input
+          errorStyle={{ color: '#B34A37' }}
+          errorMessage={
+            (shouldShowError('minimum') && 'Ingrese un numero valido') || ''
+          }
+          labelStyle={{
+            color: colorScheme === 'dark' ? 'white' : 'gray',
+          }}
+          label="Balance Mínimo"
+          placeholder="Balance Mínimo"
+          value={minimum}
+          onChangeText={(text) => {
+            setMinimum(text.trim());
+          }}
+          keyboardType="number-pad"
+          leftIcon={{ type: 'ionicon', name: 'cash-outline' }}
+        />
+      )}
       <Button
         title="Crear Cuenta"
+        disabled={disabled}
         onPress={() => {
           dispatch(
             createAccount(
               user.token,
               name,
               currency,
-              Math.abs(Number(ammount) || 0),
-              (Number(ammount) || 0) >= 0
+              Number(amount),
+              hasMinimum,
+              hasMinimum ? Number(minimum) : 0
             )
           );
           Alert.alert(
@@ -88,6 +171,16 @@ const CreateAccount = ({ navigation }) => {
 
 const style = StyleSheet.create({
   mainContainer: { flex: 1 },
+  section: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  paragraph: {
+    fontSize: 15,
+  },
+  checkbox: {
+    margin: 8,
+  },
 });
 
 export default CreateAccount;
