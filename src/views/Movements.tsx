@@ -1,28 +1,33 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, ScrollView, RefreshControl, StyleSheet } from 'react-native';
+import {
+  View,
+  ScrollView,
+  RefreshControl,
+  StyleSheet,
+  Alert,
+} from 'react-native';
 import { useColorScheme } from 'react-native-appearance';
-import { ButtonGroup, ListItem, Icon } from 'react-native-elements';
+import { ListItem, Icon, Button } from 'react-native-elements';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
+import moment from 'moment';
+import 'moment/locale/es';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { getMovements } from '../redux/thunks/movements';
+import { deleteMovement, getMovements } from '../redux/thunks/movements';
 import Movement from '../Types/Movement';
 import User from '../Types/User';
 
-const Movements = () => {
+// @ts-ignore
+const Movements = ({ navigation }) => {
+  moment.locale('es');
   const colorScheme = useColorScheme();
   const dispatch = useDispatch();
   const user: User = useSelector((state: RootStateOrAny) => state.auth.user);
+  const signs: any = useSelector((state: RootStateOrAny) => state.common.signs);
   const movements: Array<Movement> = useSelector(
     (state: RootStateOrAny) => state.movements.movements
   );
-  const buttons = ['Dia', 'Mes', 'Año'];
-  const [selectedIndex, setSelectedIndex] = useState(0);
+
   const [refreshing, setRefreshing] = useState(false);
-  const signs: any = {
-    HNL: 'L',
-    USD: '$',
-    EUR: '€',
-  };
   useEffect(() => {
     dispatch(getMovements(user.token));
   }, []);
@@ -33,11 +38,6 @@ const Movements = () => {
 
   return (
     <View style={style.mainContainer}>
-      {/* <ButtonGroup
-        onPress={setSelectedIndex}
-        selectedIndex={selectedIndex}
-        buttons={buttons}
-      /> */}
       <ScrollView
         style={style.scrollContainer}
         refreshControl={
@@ -45,7 +45,26 @@ const Movements = () => {
         }
       >
         {movements.map((movement) => (
-          <ListItem key={movement.movementId} bottomDivider onPress={() => {}}>
+          <ListItem
+            key={movement.movementId}
+            bottomDivider
+            onPress={() => {}}
+            onLongPress={() => {
+              Alert.alert(
+                'Borrar movimiento',
+                '¿Seguro que querés borrar este movimiento ?',
+                [
+                  {
+                    text: 'Si',
+                    onPress: () => {
+                      dispatch(deleteMovement(user.token, movement.movementId));
+                    },
+                  },
+                  { text: 'No' },
+                ]
+              );
+            }}
+          >
             <Ionicons
               name={`${
                 movement.isIncome
@@ -56,7 +75,15 @@ const Movements = () => {
               color={movement.isIncome ? '#37B94A' : '#B34A37'}
             />
             <ListItem.Content>
-              <ListItem.Title>{`${movement.accountName} ${movement.name}`}</ListItem.Title>
+              <ListItem.Title>{`${movement.accountName}`}</ListItem.Title>
+              <ListItem.Subtitle style={{ color: 'gray' }}>{`${moment(
+                movement.createdAt
+              ).format('DD/MM/YYYY HH:mm')}`}</ListItem.Subtitle>
+              {movement.note !== '' && (
+                <ListItem.Subtitle style={{ color: 'gray' }}>
+                  {movement.note}
+                </ListItem.Subtitle>
+              )}
             </ListItem.Content>
             <ListItem.Subtitle
               style={{ color: colorScheme === 'dark' ? 'white' : 'gray' }}
@@ -78,7 +105,7 @@ const Movements = () => {
           name="add"
           type="ionicon"
           onPress={() => {
-            // navigation.navigate({ name: 'create' });
+            navigation.navigate({ name: 'create' });
           }}
         />
       </View>
