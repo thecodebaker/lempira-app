@@ -19,15 +19,11 @@ const Accounts = ({ navigation }) => {
   const dispatch = useDispatch();
   const colorScheme = useColorScheme();
   const user: User = useSelector((state: RootStateOrAny) => state.auth.user);
+  const signs: any = useSelector((state: RootStateOrAny) => state.common.signs);
   const accounts: Array<Account> = useSelector(
     (state: RootStateOrAny) => state.accounts.accounts
   );
   const [refreshing, setRefreshing] = useState(false);
-  const signs: any = {
-    HNL: 'L',
-    USD: '$',
-    EUR: '€',
-  };
   useEffect(() => {
     dispatch(getAccounts(user.token));
   }, []);
@@ -72,15 +68,20 @@ const Accounts = ({ navigation }) => {
             />
             <ListItem.Content>
               <ListItem.Title>{account.name}</ListItem.Title>
+              {account.hasMinimum && (
+                <ListItem.Subtitle style={{ color: 'gray' }}>
+                  {`Balance Mínimo: ${
+                    signs[account.currency]
+                  } ${account.minimum.toFixed(2)}`}
+                </ListItem.Subtitle>
+              )}
             </ListItem.Content>
             <ListItem.Subtitle
               style={{
-                color: account.movement.current < 0 ? '#B34A37' : '#37B94A',
+                color: account.balance < 0 ? '#B34A37' : '#37B94A',
               }}
             >
-              {`${signs[account.currency]} ${account.movement.current.toFixed(
-                2
-              )}`}
+              {`${signs[account.currency]} ${account.balance.toFixed(2)}`}
             </ListItem.Subtitle>
           </ListItem>
         ))}
