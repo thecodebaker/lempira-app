@@ -33,14 +33,15 @@ export const createAccount = (
   token: string,
   name: string,
   currency: string,
-  amount: number,
-  isIncome: boolean
+  balance: number,
+  hasMinimum: boolean,
+  minimum: number | undefined
 ) => {
   return (dispatch: ThunkDispatch<{}, {}, Action<any>>) => {
     return axios
       .post(
         `${BASE_URL}/accounts/`,
-        { name, currency, amount, isIncome },
+        { name, currency, balance, hasMinimum, minimum },
         {
           headers: {
             Authorization: `Bearer ${token}`,

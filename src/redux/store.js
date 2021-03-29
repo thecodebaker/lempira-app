@@ -5,6 +5,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import authReducer from './reducers/auth';
 import accountsReducer from './reducers/accounts';
 import movementsReducer from './reducers/movements';
+import commonReducer from './reducers/common';
 
 const persistConfig = {
   key: 'root',
@@ -15,6 +16,14 @@ const reducer = combineReducers({
   auth: authReducer,
   accounts: accountsReducer,
   movements: movementsReducer,
+  common: persistReducer(
+    {
+      key: 'common',
+      storage: AsyncStorage,
+      blacklist: ['signs'],
+    },
+    commonReducer
+  ),
 });
 const persistedReducer = persistReducer(persistConfig, reducer);
 const store = createStore(persistedReducer, applyMiddleware(ReduxThunk));
