@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ThemeProvider } from 'react-native-elements';
 import { useColorScheme, AppearanceProvider } from 'react-native-appearance';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { Provider, useSelector, RootStateOrAny } from 'react-redux';
+import {
+  Provider,
+  useSelector,
+  RootStateOrAny,
+  useDispatch,
+} from 'react-redux';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -16,8 +21,12 @@ import Login from './src/views/Login';
 import Settings from './src/views/Settings';
 import Signup from './src/views/Signup';
 import Stats from './src/views/Stats';
-import AccountNavigator from './src/Navigators/AccountNavigator';
+import AccountsNavigator from './src/Navigators/AccountsNavigator';
+import MovementsNavigator from './src/Navigators/MovementsNavigator';
 import User from './src/Types/User';
+import { getAccounts } from './src/redux/thunks/accounts';
+import { getMovements } from './src/redux/thunks/movements';
+import { getExchanges } from './src/redux/thunks/common';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -60,6 +69,12 @@ const AppContainer = () => {
 
 const App = () => {
   const user: User = useSelector((state: RootStateOrAny) => state.auth.user);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAccounts(user.token));
+    dispatch(getMovements(user.token));
+    dispatch(getExchanges(user.token));
+  }, []);
   const colorScheme = useColorScheme();
   if (user.token === undefined)
     return (
@@ -97,9 +112,9 @@ const App = () => {
           inactiveTintColor: colorScheme === 'dark' ? '#FFFEFF' : 'black',
         }}
       >
-        <Tab.Screen name="Movimientos" component={Movements} />
+        <Tab.Screen name="Movimientos" component={MovementsNavigator} />
         <Tab.Screen name="Estadisticas" component={Stats} />
-        <Tab.Screen name="Cuentas" component={AccountNavigator} />
+        <Tab.Screen name="Cuentas" component={AccountsNavigator} />
         <Tab.Screen name="Ajustes" component={Settings} />
       </Tab.Navigator>
     );
