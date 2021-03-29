@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, KeyboardAvoidingView } from 'react-native';
-import { Text, Button, Input, withTheme } from 'react-native-elements';
+import { Text, Button, Input } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 import validator from 'validator';
