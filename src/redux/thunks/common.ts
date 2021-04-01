@@ -1,16 +1,17 @@
-import axios from 'axios';
-import { ThunkDispatch } from 'redux-thunk';
 // @ts-ignore
 import { BASE_URL } from '@env';
+import axios from 'axios';
+import moment from 'moment';
+import { ThunkDispatch } from 'redux-thunk';
+
+import { Action } from '../../Types/Action';
 import { SET_LAST_EXCHANGE, SET_EXCHANGES } from '../actions';
 import store from '../store';
-import moment from 'moment';
 import 'moment/locale/es';
 moment.locale('es');
-import { Action } from '../../Types/Action';
 
 export const getExchanges = (token: string) => {
-  return async (dispatch: ThunkDispatch<{}, {}, Action<any>>) => {
+  return async (dispatch: ThunkDispatch<object, object, Action<any>>) => {
     if (
       store.getState().common.lastUpdate === undefined ||
       moment().diff(store.getState().common.lastUpdate, 'day') > 0

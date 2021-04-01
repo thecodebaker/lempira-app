@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { Button, Input, withTheme } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
-import { SIGNUP } from '../redux/thunks/auth';
 import validator from 'validator';
+
+import { SIGNUP } from '../redux/thunks/auth';
 
 const Signup = () => {
   const dispatch = useDispatch();

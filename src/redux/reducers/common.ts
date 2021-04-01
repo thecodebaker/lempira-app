@@ -1,5 +1,4 @@
 import { Action } from '../../Types/Action';
-import moment from 'moment';
 import { SET_LAST_EXCHANGE, SET_EXCHANGES } from '../actions';
 
 const initialState = {

@@ -1,13 +1,14 @@
-import axios from 'axios';
-import { ThunkDispatch } from 'redux-thunk';
 // @ts-ignore
 import { BASE_URL } from '@env';
+import axios from 'axios';
+import { ThunkDispatch } from 'redux-thunk';
+
 import { Action } from '../../Types/Action';
-import { SET_ACCOUNTS, SET_MOVEMENTS, SET_USER } from '../actions';
 import User from '../../Types/User';
+import { SET_ACCOUNTS, SET_MOVEMENTS, SET_USER } from '../actions';
 
 export const LOGIN = (email: string, password: string) => {
-  return (dispatch: ThunkDispatch<{}, {}, Action<User>>) => {
+  return (dispatch: ThunkDispatch<object, object, Action<User>>) => {
     return axios
       .post(`${BASE_URL}/auth/login`, { email, password })
       .then((resp) => {
@@ -23,7 +24,7 @@ export const LOGIN = (email: string, password: string) => {
 };
 
 export const SIGNUP = (email: string, password: string, name: string) => {
-  return (dispatch: ThunkDispatch<{}, {}, Action<User>>) => {
+  return (dispatch: ThunkDispatch<object, object, Action<User>>) => {
     return axios
       .post(`${BASE_URL}/auth/signup`, { email, password, name })
       .then((resp) => {
@@ -36,7 +37,7 @@ export const SIGNUP = (email: string, password: string, name: string) => {
 };
 
 export const SIGNOUT = () => {
-  return (dispatch: ThunkDispatch<{}, {}, Action<any>>) => {
+  return (dispatch: ThunkDispatch<object, object, Action<any>>) => {
     dispatch({
       type: SET_ACCOUNTS,
       payload: {

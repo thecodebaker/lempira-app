@@ -1,13 +1,14 @@
+import { Picker } from '@react-native-picker/picker';
+import Checkbox from 'expo-checkbox';
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { Input, Button, Text } from 'react-native-elements';
-import Checkbox from 'expo-checkbox';
-import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import { Picker } from '@react-native-picker/picker';
 import { useColorScheme } from 'react-native-appearance';
+import { Input, Button, Text } from 'react-native-elements';
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
+import validator from 'validator';
+
 import User from '../Types/User';
 import { createAccount } from '../redux/thunks/accounts';
-import validator from 'validator';
 
 // @ts-ignore
 const CreateAccount = ({ navigation }) => {

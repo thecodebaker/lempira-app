@@ -1,12 +1,13 @@
+import { Picker } from '@react-native-picker/picker';
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
+import { useColorScheme } from 'react-native-appearance';
 import { Input, Button, Text, ButtonGroup } from 'react-native-elements';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import { Picker } from '@react-native-picker/picker';
-import { useColorScheme } from 'react-native-appearance';
-import User from '../Types/User';
-import Account from '../Types/Account';
 import validator from 'validator';
+
+import Account from '../Types/Account';
+import User from '../Types/User';
 import { createMovement } from '../redux/thunks/movements';
 
 // @ts-ignore
@@ -17,7 +18,7 @@ const CreateAccount = ({ navigation }) => {
   const exchanges: any = useSelector(
     (state: RootStateOrAny) => state.common.exchanges
   );
-  const accounts: Array<Account> = useSelector(
+  const accounts: Account[] = useSelector(
     (state: RootStateOrAny) => state.accounts.accounts
   );
   const [note, setNote] = useState('');
@@ -35,8 +36,10 @@ const CreateAccount = ({ navigation }) => {
       case 'amount': {
         return !validator.isEmpty(amount) && !validator.isNumeric(amount);
       }
+      default: {
+        return false;
+      }
     }
-    return false;
   };
   useEffect(() => {
     setDisabled(validator.isEmpty(amount) || shouldShowError('amount'));
@@ -78,10 +81,10 @@ const CreateAccount = ({ navigation }) => {
         selectedValue={account}
         onValueChange={(value) => {
           setAccount(value.toString());
-          const account = accounts.find(
+          const selectedAccount = accounts.find(
             (v) => v.accountId === value.toString()
           );
-          setCurrency(account?.currency || 'HNL');
+          setCurrency(selectedAccount?.currency || 'HNL');
         }}
         dropdownIconColor={colorScheme === 'dark' ? 'white' : 'gray'}
         itemStyle={{
@@ -91,15 +94,13 @@ const CreateAccount = ({ navigation }) => {
           color: colorScheme === 'dark' ? 'white' : 'gray',
         }}
       >
-        {accounts.map((account) => {
-          return (
-            <Picker.Item
-              label={account.name}
-              value={account.accountId}
-              key={account.accountId}
-            />
-          );
-        })}
+        {accounts.map((accountItem: Account) => (
+          <Picker.Item
+            label={accountItem.name}
+            value={accountItem.accountId}
+            key={accountItem.accountId}
+          />
+        ))}
       </Picker>
       <Text style={{ fontSize: 16, fontWeight: 'bold', marginLeft: 12 }}>
         Moneda del movimiento

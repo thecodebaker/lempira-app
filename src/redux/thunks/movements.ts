@@ -7,7 +7,7 @@ import { SET_MOVEMENTS } from '../actions';
 import { getAccounts } from './accounts';
 
 export const getMovements = (token: string, callback?: Function) => {
-  return (dispatch: ThunkDispatch<{}, {}, Action<any>>) => {
+  return (dispatch: ThunkDispatch<object, object, Action<any>>) => {
     return axios
       .get(`${BASE_URL}/movements/`, {
         headers: {
@@ -38,7 +38,7 @@ export const createMovement = (
   note: string,
   callback: Function
 ) => {
-  return async (dispatch: ThunkDispatch<{}, {}, Action<any>>) => {
+  return async (dispatch: ThunkDispatch<object, object, Action<any>>) => {
     return axios
       .post(
         `${BASE_URL}/movements/`,
@@ -62,7 +62,7 @@ export const createMovement = (
 };
 
 export const deleteMovement = (token: string, movementId: string) => {
-  return (dispatch: ThunkDispatch<{}, {}, Action<any>>) => {
+  return (dispatch: ThunkDispatch<object, object, Action<any>>) => {
     return axios
       .delete(`${BASE_URL}/movements/`, {
         data: {

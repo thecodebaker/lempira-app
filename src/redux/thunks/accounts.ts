@@ -1,12 +1,13 @@
-import axios from 'axios';
-import { ThunkDispatch } from 'redux-thunk';
 // @ts-ignore
 import { BASE_URL } from '@env';
-import { SET_ACCOUNTS } from '../actions';
+import axios from 'axios';
+import { ThunkDispatch } from 'redux-thunk';
+
 import { Action } from '../../Types/Action';
+import { SET_ACCOUNTS } from '../actions';
 
 export const getAccounts = (token: string, callback?: Function) => {
-  return (dispatch: ThunkDispatch<{}, {}, Action<any>>) => {
+  return (dispatch: ThunkDispatch<object, object, Action<any>>) => {
     return axios
       .get(`${BASE_URL}/accounts/`, {
         headers: {
@@ -38,7 +39,7 @@ export const createAccount = (
   minimum: number | undefined,
   callback: Function
 ) => {
-  return (dispatch: ThunkDispatch<{}, {}, Action<any>>) => {
+  return (dispatch: ThunkDispatch<object, object, Action<any>>) => {
     return axios
       .post(
         `${BASE_URL}/accounts/`,
@@ -60,7 +61,7 @@ export const createAccount = (
 };
 
 export const deleteAccount = (token: string, accountId: string) => {
-  return (dispatch: ThunkDispatch<{}, {}, Action<any>>) => {
+  return (dispatch: ThunkDispatch<object, object, Action<any>>) => {
     return axios
       .delete(`${BASE_URL}/accounts/`, {
         data: {

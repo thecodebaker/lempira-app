@@ -3,7 +3,7 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: ['plugin:react/recommended', 'airbnb_base', 'prettier'],
+  extends: ['plugin:react/recommended', 'universe', 'prettier'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
@@ -13,5 +13,8 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['react', '@typescript-eslint', 'prettier'],
-  rules: {},
+  rules: {
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', 'tsx'] }],
+    'react/prop-types': ['error', { ignore: ['navigation'] }],
+  },
 };

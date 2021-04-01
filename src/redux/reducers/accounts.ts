@@ -1,6 +1,5 @@
 import { Action } from '../../Types/Action';
 import { SET_ACCOUNTS } from '../actions';
-import Account from '../../Types/Account';
 const initialState = {
   accounts: [],
 };

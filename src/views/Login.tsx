@@ -4,6 +4,7 @@ import { Text, Button, Input } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 import validator from 'validator';
+
 import { LOGIN } from '../redux/thunks/auth';
 
 // @ts-ignore

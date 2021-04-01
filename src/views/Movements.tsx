@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
@@ -9,12 +10,12 @@ import {
 import { useColorScheme } from 'react-native-appearance';
 import { ListItem, Icon, ButtonGroup, Text } from 'react-native-elements';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
-import moment from 'moment';
+
 import 'moment/locale/es';
-import { deleteMovement, getMovements } from '../redux/thunks/movements';
 import Movement from '../Types/Movement';
 import User from '../Types/User';
 import AccordionItem from '../components/AccordionItem';
+import { deleteMovement, getMovements } from '../redux/thunks/movements';
 
 // @ts-ignore
 const Movements = ({ navigation }) => {
@@ -23,7 +24,7 @@ const Movements = ({ navigation }) => {
   const dispatch = useDispatch();
   const user: User = useSelector((state: RootStateOrAny) => state.auth.user);
   const signs: any = useSelector((state: RootStateOrAny) => state.common.signs);
-  const movements: Array<Movement> = useSelector(
+  const movements: Movement[] = useSelector(
     (state: RootStateOrAny) => state.movements.movements
   );
   const [selectedIndex, setSelectedIndex] = useState(0);

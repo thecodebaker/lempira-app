@@ -3,8 +3,9 @@ import { View } from 'react-native';
 import { useColorScheme } from 'react-native-appearance';
 import { Avatar, ListItem, Icon } from 'react-native-elements';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import { SIGNOUT } from '../redux/thunks/auth';
+
 import User from '../Types/User';
+import { SIGNOUT } from '../redux/thunks/auth';
 
 const Settings = () => {
   const colorScheme = useColorScheme();

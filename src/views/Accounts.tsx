@@ -6,12 +6,13 @@ import {
   RefreshControl,
   Alert,
 } from 'react-native';
+import { useColorScheme } from 'react-native-appearance';
 import { ListItem, Icon } from 'react-native-elements';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import { useColorScheme } from 'react-native-appearance';
-import { getAccounts, deleteAccount } from '../redux/thunks/accounts';
+
 import Account from '../Types/Account';
 import User from '../Types/User';
+import { getAccounts, deleteAccount } from '../redux/thunks/accounts';
 
 // @ts-ignore
 const Accounts = ({ navigation }) => {
@@ -19,7 +20,7 @@ const Accounts = ({ navigation }) => {
   const colorScheme = useColorScheme();
   const user: User = useSelector((state: RootStateOrAny) => state.auth.user);
   const signs: any = useSelector((state: RootStateOrAny) => state.common.signs);
-  const accounts: Array<Account> = useSelector(
+  const accounts: Account[] = useSelector(
     (state: RootStateOrAny) => state.accounts.accounts
   );
   const [refreshing, setRefreshing] = useState(false);

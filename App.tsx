@@ -1,30 +1,31 @@
-import React, { useEffect } from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { ThemeProvider, Icon } from 'react-native-elements';
-import { useColorScheme, AppearanceProvider } from 'react-native-appearance';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
+import React, { useEffect } from 'react';
+import { useColorScheme, AppearanceProvider } from 'react-native-appearance';
+import { ThemeProvider, Icon } from 'react-native-elements';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import {
   Provider,
   useSelector,
   RootStateOrAny,
   useDispatch,
 } from 'react-redux';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { PersistGate } from 'redux-persist/integration/react';
-import { LightTheme, DarkTheme } from './src/themes';
+
+import AccountsNavigator from './src/Navigators/AccountsNavigator';
+import MovementsNavigator from './src/Navigators/MovementsNavigator';
+import User from './src/Types/User';
 import { getStore, getPersistor } from './src/redux/store';
+import { getAccounts } from './src/redux/thunks/accounts';
+import { getExchanges } from './src/redux/thunks/common';
+import { getMovements } from './src/redux/thunks/movements';
+import { LightTheme, DarkTheme } from './src/themes';
 import Login from './src/views/Login';
 import Settings from './src/views/Settings';
 import Signup from './src/views/Signup';
 import Stats from './src/views/Stats';
-import AccountsNavigator from './src/Navigators/AccountsNavigator';
-import MovementsNavigator from './src/Navigators/MovementsNavigator';
-import User from './src/Types/User';
-import { getAccounts } from './src/redux/thunks/accounts';
-import { getMovements } from './src/redux/thunks/movements';
-import { getExchanges } from './src/redux/thunks/common';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -91,6 +92,7 @@ const App = () => {
     return (
       <Tab.Navigator
         screenOptions={({ route }) => ({
+          // eslint-disable-next-line react/prop-types, react/display-name
           tabBarIcon: ({ focused, color, size }) => {
             let iconName: string = '';
             if (route.name === 'Movimientos') {

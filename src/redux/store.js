@@ -1,11 +1,12 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { AsyncStorage } from 'react-native';
-import ReduxThunk from 'redux-thunk';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
-import authReducer from './reducers/auth';
+import ReduxThunk from 'redux-thunk';
+
 import accountsReducer from './reducers/accounts';
-import movementsReducer from './reducers/movements';
+import authReducer from './reducers/auth';
 import commonReducer from './reducers/common';
+import movementsReducer from './reducers/movements';
 
 const persistConfig = {
   key: 'root',
