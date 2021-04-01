@@ -17,7 +17,7 @@ export const LOGIN = (email: string, password: string) => {
         });
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
       });
   };
 };
@@ -27,13 +27,10 @@ export const SIGNUP = (email: string, password: string, name: string) => {
     return axios
       .post(`${BASE_URL}/auth/signup`, { email, password, name })
       .then((resp) => {
-        dispatch({
-          type: SET_USER,
-          payload: { token: resp.data.token, name: resp.data.name },
-        });
+        dispatch(LOGIN(email, password));
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
       });
   };
 };
