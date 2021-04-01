@@ -38,9 +38,9 @@ const Login = ({ navigation }) => {
         placeholder="ejemplo@lempira.com"
         errorStyle={{ color: '#B34A37' }}
         errorMessage={
-          (shouldShowError('email') && 'Ingrese un correo valido') || ''
+          (shouldShowError('email') && 'Ingrese un correo válido') || ''
         }
-        leftIcon={{ type: 'ionicon', name: 'mail-outline' }}
+        leftIcon={{ type: 'material-community', name: 'email-outline' }}
         onChangeText={(text) => {
           setEmail(text);
         }}
@@ -49,7 +49,7 @@ const Login = ({ navigation }) => {
         label="Contraseña"
         secureTextEntry
         placeholder="Contraseña"
-        leftIcon={{ type: 'ionicon', name: 'lock-closed-outline' }}
+        leftIcon={{ type: 'material-community', name: 'lock-outline' }}
         onChangeText={(text) => {
           setPassword(text);
         }}

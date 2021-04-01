@@ -1,8 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { useColorScheme } from 'react-native-appearance';
-import { Avatar, ListItem } from 'react-native-elements';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Avatar, ListItem, Icon } from 'react-native-elements';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { SIGNOUT } from '../redux/thunks/auth';
 import User from '../Types/User';
@@ -15,7 +14,7 @@ const Settings = () => {
   const list = [
     {
       title: 'Cerrar Sesión',
-      icon: 'settings',
+      icon: 'cog',
       onPress: () => {
         dispatch(SIGNOUT());
       },
@@ -36,7 +35,8 @@ const Settings = () => {
       </ListItem>
       {list.map((l, i) => (
         <ListItem key={i} bottomDivider onPress={l.onPress}>
-          <Ionicons
+          <Icon
+            type="material-community"
             name={l.icon}
             size={32}
             color={colorScheme === 'dark' ? 'white' : 'gray'}

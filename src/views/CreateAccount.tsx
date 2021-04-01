@@ -57,7 +57,7 @@ const CreateAccount = ({ navigation }) => {
           setName(text);
         }}
         placeholder="Nombre Eje: Efectivo, BAC"
-        leftIcon={{ type: 'ionicon', name: 'bookmark-outline' }}
+        leftIcon={{ type: 'material-community', name: 'bookmark-outline' }}
       />
       <Input
         labelStyle={{
@@ -66,7 +66,7 @@ const CreateAccount = ({ navigation }) => {
         label="Balance Inicial"
         errorStyle={{ color: '#B34A37' }}
         errorMessage={
-          (shouldShowError('amount') && 'Ingrese un numero valido') || ''
+          (shouldShowError('amount') && 'Ingrese un numero válido') || ''
         }
         placeholder="Balance inicial"
         value={amount}
@@ -74,7 +74,7 @@ const CreateAccount = ({ navigation }) => {
           setAmount(text.trim());
         }}
         keyboardType="number-pad"
-        leftIcon={{ type: 'ionicon', name: 'cash-outline' }}
+        leftIcon={{ type: 'material-community', name: 'cash' }}
       />
       <Text style={{ fontSize: 16, fontWeight: 'bold', marginLeft: 12 }}>
         Moneda de la cuenta
@@ -117,7 +117,7 @@ const CreateAccount = ({ navigation }) => {
         <Input
           errorStyle={{ color: '#B34A37' }}
           errorMessage={
-            (shouldShowError('minimum') && 'Ingrese un numero valido') || ''
+            (shouldShowError('minimum') && 'Ingrese un numero válido') || ''
           }
           labelStyle={{
             color: colorScheme === 'dark' ? 'white' : 'gray',
@@ -129,7 +129,7 @@ const CreateAccount = ({ navigation }) => {
             setMinimum(text.trim());
           }}
           keyboardType="number-pad"
-          leftIcon={{ type: 'ionicon', name: 'cash-outline' }}
+          leftIcon={{ type: 'material-community', name: 'cash' }}
         />
       )}
       <Button
@@ -143,25 +143,27 @@ const CreateAccount = ({ navigation }) => {
               currency,
               Number(amount),
               hasMinimum,
-              hasMinimum ? Number(minimum) : 0
+              hasMinimum ? Number(minimum) : 0,
+              () => {
+                Alert.alert(
+                  'Cuenta Creada',
+                  `La cuenta ${name} fue creada con exito`,
+                  [
+                    {
+                      text: 'OK',
+                      onPress: () => {
+                        navigation.goBack();
+                      },
+                    },
+                  ]
+                );
+              }
             )
-          );
-          Alert.alert(
-            'Cuenta Creada',
-            `La cuenta ${name} fue creada con exito`,
-            [
-              {
-                text: 'OK',
-                onPress: () => {
-                  navigation.goBack();
-                },
-              },
-            ]
           );
         }}
         icon={{
-          type: 'ionicon',
-          name: 'add',
+          type: 'material-community',
+          name: 'plus',
           color: 'white',
         }}
       />

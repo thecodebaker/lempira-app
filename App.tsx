@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { ThemeProvider } from 'react-native-elements';
+import { ThemeProvider, Icon } from 'react-native-elements';
 import { useColorScheme, AppearanceProvider } from 'react-native-appearance';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
@@ -12,11 +12,9 @@ import {
   useDispatch,
 } from 'react-redux';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { PersistGate } from 'redux-persist/integration/react';
 import { LightTheme, DarkTheme } from './src/themes';
 import { getStore, getPersistor } from './src/redux/store';
-import Movements from './src/views/Movements';
 import Login from './src/views/Login';
 import Settings from './src/views/Settings';
 import Signup from './src/views/Signup';
@@ -71,9 +69,11 @@ const App = () => {
   const user: User = useSelector((state: RootStateOrAny) => state.auth.user);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAccounts(user.token));
-    dispatch(getMovements(user.token));
-    dispatch(getExchanges(user.token));
+    if (user.token !== undefined) {
+      dispatch(getAccounts(user.token));
+      dispatch(getMovements(user.token));
+      dispatch(getExchanges(user.token));
+    }
   }, []);
   const colorScheme = useColorScheme();
   if (user.token === undefined)
@@ -94,17 +94,22 @@ const App = () => {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName: string = '';
             if (route.name === 'Movimientos') {
-              iconName = focused
-                ? 'swap-horizontal'
-                : 'swap-horizontal-outline';
+              iconName = 'swap-horizontal';
             } else if (route.name === 'Ajustes') {
-              iconName = focused ? 'settings' : 'settings-outline';
+              iconName = focused ? 'cog' : 'cog-outline';
             } else if (route.name === 'Estadisticas') {
-              iconName = focused ? 'analytics' : 'analytics-outline';
+              iconName = 'chart-bell-curve-cumulative';
             } else if (route.name === 'Cuentas') {
-              iconName = focused ? 'file-tray-full' : 'file-tray-full-outline';
+              iconName = focused ? 'archive' : 'archive-outline';
             }
-            return <Ionicons name={iconName} size={size} color={color} />;
+            return (
+              <Icon
+                type="material-community"
+                name={iconName}
+                size={size}
+                color={color}
+              />
+            );
           },
         })}
         tabBarOptions={{

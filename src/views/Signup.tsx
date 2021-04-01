@@ -58,7 +58,7 @@ const Signup = () => {
         errorMessage={
           (shouldShowError('name') && 'Su nombre no puede tener numeros') || ''
         }
-        leftIcon={{ type: 'ionicon', name: 'person-outline' }}
+        leftIcon={{ type: 'material-community', name: 'account-outline' }}
         value={name}
         onChangeText={(text) => {
           setName(text);
@@ -69,9 +69,9 @@ const Signup = () => {
         placeholder="ejemplo@lempira.com"
         errorStyle={{ color: '#B34A37' }}
         errorMessage={
-          (shouldShowError('email') && 'Ingrese un correo valido') || ''
+          (shouldShowError('email') && 'Ingrese un correo válido') || ''
         }
-        leftIcon={{ type: 'ionicon', name: 'mail-outline' }}
+        leftIcon={{ type: 'material-community', name: 'email-outline' }}
         onChangeText={(text) => {
           setEmail(text);
         }}
@@ -86,7 +86,7 @@ const Signup = () => {
             'Su contraseña debe ser de 8 o mas caracteres, contener minimo una mayuscula una minuscula y un numero') ||
           ''
         }
-        leftIcon={{ type: 'ionicon', name: 'lock-closed-outline' }}
+        leftIcon={{ type: 'material-community', name: 'lock-outline' }}
         value={password}
         onChangeText={(text) => {
           setPassword(text);

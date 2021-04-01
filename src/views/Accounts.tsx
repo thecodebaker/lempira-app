@@ -9,7 +9,6 @@ import {
 import { ListItem, Icon } from 'react-native-elements';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { useColorScheme } from 'react-native-appearance';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { getAccounts, deleteAccount } from '../redux/thunks/accounts';
 import Account from '../Types/Account';
 import User from '../Types/User';
@@ -61,8 +60,9 @@ const Accounts = ({ navigation }) => {
               );
             }}
           >
-            <Ionicons
-              name={'cash-outline'}
+            <Icon
+              type="material-community"
+              name={'cash-multiple'}
               size={32}
               color={colorScheme === 'dark' ? 'white' : 'gray'}
             />
@@ -93,8 +93,8 @@ const Accounts = ({ navigation }) => {
           size={24}
           reverseColor="white"
           color="#37B94A"
-          name="add"
-          type="ionicon"
+          name="plus"
+          type="material-community"
           onPress={() => {
             navigation.navigate({ name: 'create' });
           }}

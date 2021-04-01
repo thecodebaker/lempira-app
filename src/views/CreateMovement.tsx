@@ -60,7 +60,7 @@ const CreateAccount = ({ navigation }) => {
         }}
         errorStyle={{ color: '#B34A37' }}
         errorMessage={
-          (shouldShowError('amount') && 'Ingrese un numero valido') || ''
+          (shouldShowError('amount') && 'Ingrese un numero válido') || ''
         }
         label="Total del movimiento"
         placeholder="Total del movimiento"
@@ -69,7 +69,7 @@ const CreateAccount = ({ navigation }) => {
           setAmount(text.trim());
         }}
         keyboardType="number-pad"
-        leftIcon={{ type: 'ionicon', name: 'cash-outline' }}
+        leftIcon={{ type: 'material-community', name: 'cash' }}
       />
       <Text style={{ fontSize: 16, fontWeight: 'bold', marginLeft: 12 }}>
         Cuenta del movimiento
@@ -131,7 +131,7 @@ const CreateAccount = ({ navigation }) => {
           setNote(text);
         }}
         placeholder="Nota para el movimiento"
-        leftIcon={{ type: 'ionicon', name: 'bookmark-outline' }}
+        leftIcon={{ type: 'material-community', name: 'bookmark-outline' }}
       />
       <Button
         title="Crear movimiento"
@@ -150,24 +150,27 @@ const CreateAccount = ({ navigation }) => {
               account,
               finalAmount,
               selectedIndex === 0,
-              note
+              note,
+              () => {
+                Alert.alert(
+                  'Movimiento Creado',
+                  'Movimiento creado con exito',
+                  [
+                    {
+                      text: 'OK',
+                      onPress: () => {
+                        navigation.goBack();
+                      },
+                    },
+                  ]
+                );
+              }
             )
           );
-          Alert.alert('Movimiento Creado', 'Movimiento creado con exito', [
-            {
-              text: 'OK',
-              onPress: () => {
-                navigation.goBack();
-              },
-            },
-          ]);
         }}
         icon={{
-          type: 'ionicon',
-          name:
-            selectedIndex === 0
-              ? 'arrow-back-outline'
-              : 'arrow-forward-outline',
+          type: 'material-community',
+          name: selectedIndex === 0 ? 'arrow-left' : 'arrow-right',
           color: 'white',
         }}
       />
