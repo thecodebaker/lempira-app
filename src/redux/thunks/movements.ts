@@ -1,7 +1,8 @@
-import axios from 'axios';
-import { ThunkDispatch } from 'redux-thunk';
 // @ts-ignore
 import { BASE_URL } from '@env';
+import axios from 'axios';
+import { ThunkDispatch } from 'redux-thunk';
+
 import { Action } from '../../Types/Action';
 import { SET_MOVEMENTS } from '../actions';
 import { getAccounts } from './accounts';
@@ -50,7 +51,7 @@ export const createMovement = (
         }
       )
       .then((resp) => {
-        const { movements } = resp.data;
+        // const { movements } = resp.data;
         dispatch(getAccounts(token));
         dispatch(getMovements(token));
         callback();

@@ -6,6 +6,29 @@ import { ThunkDispatch } from 'redux-thunk';
 import { Action } from '../../Types/Action';
 import { SET_ACCOUNTS } from '../actions';
 
+export const getAccountTotalStats = (
+  token: string,
+  accountId: string,
+  setLabels: Function,
+  setOutcomeData: Function,
+  setIncomeData: Function
+) => {
+  return (dispatch: ThunkDispatch<object, object, Action<any>>) => {
+    return axios
+      .get(`${BASE_URL}/accounts/stats/totals/${accountId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((resp) => {
+        console.log(resp.data);
+        setLabels(resp.data.labels);
+        setOutcomeData(resp.data.outcomeData);
+        setIncomeData(resp.data.incomeData);
+      });
+  };
+};
+
 export const getAccounts = (token: string, callback?: Function) => {
   return (dispatch: ThunkDispatch<object, object, Action<any>>) => {
     return axios
