@@ -35,7 +35,8 @@ export const createAccount = (
   currency: string,
   balance: number,
   hasMinimum: boolean,
-  minimum: number | undefined
+  minimum: number | undefined,
+  callback: Function
 ) => {
   return (dispatch: ThunkDispatch<{}, {}, Action<any>>) => {
     return axios
@@ -50,9 +51,10 @@ export const createAccount = (
       )
       .then((resp) => {
         dispatch(getAccounts(token));
+        callback();
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
       });
   };
 };
@@ -72,7 +74,7 @@ export const deleteAccount = (token: string, accountId: string) => {
         dispatch(getAccounts(token));
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
       });
   };
 };

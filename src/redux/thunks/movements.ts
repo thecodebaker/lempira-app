@@ -4,6 +4,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { BASE_URL } from '@env';
 import { Action } from '../../Types/Action';
 import { SET_MOVEMENTS } from '../actions';
+import { getAccounts } from './accounts';
 
 export const getMovements = (token: string, callback?: Function) => {
   return (dispatch: ThunkDispatch<{}, {}, Action<any>>) => {
@@ -24,7 +25,7 @@ export const getMovements = (token: string, callback?: Function) => {
         callback && callback(false);
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
       });
   };
 };
@@ -34,7 +35,8 @@ export const createMovement = (
   accountId: string,
   amount: number,
   isIncome: boolean,
-  note: string
+  note: string,
+  callback: Function
 ) => {
   return async (dispatch: ThunkDispatch<{}, {}, Action<any>>) => {
     return axios
@@ -49,10 +51,12 @@ export const createMovement = (
       )
       .then((resp) => {
         const { movements } = resp.data;
+        dispatch(getAccounts(token));
         dispatch(getMovements(token));
+        callback();
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
       });
   };
 };
@@ -69,10 +73,11 @@ export const deleteMovement = (token: string, movementId: string) => {
         },
       })
       .then((resp) => {
+        dispatch(getAccounts(token));
         dispatch(getMovements(token));
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
       });
   };
 };
