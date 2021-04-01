@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Icon, ListItem } from 'react-native-elements';
 
-interface propType {
+type propType = {
   title: string;
   children: React.ReactNode;
-}
+};
 const AccordionItem = ({ title, children }: propType) => {
   const [isExpanded, setIsExpanded] = useState(false);
   return (

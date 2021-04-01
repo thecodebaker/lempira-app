@@ -17,8 +17,12 @@ import User from '../Types/User';
 import AccordionItem from '../components/AccordionItem';
 import { deleteMovement, getMovements } from '../redux/thunks/movements';
 
-// @ts-ignore
-const Movements = ({ navigation }) => {
+type propType = {
+  navigation: {
+    navigate: Function;
+  };
+};
+const Movements = ({ navigation }: propType) => {
   moment.locale('es');
   const colorScheme = useColorScheme();
   const dispatch = useDispatch();
@@ -56,7 +60,7 @@ const Movements = ({ navigation }) => {
   }, []);
   return (
     <View style={style.mainContainer}>
-      <Text>Separar movimientos por:</Text>
+      <Text h4>Separar movimientos por:</Text>
       <ButtonGroup
         onPress={(s) => setSelectedIndex(s)}
         selectedIndex={selectedIndex}
