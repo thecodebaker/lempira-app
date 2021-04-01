@@ -7,8 +7,12 @@ import validator from 'validator';
 
 import { LOGIN } from '../redux/thunks/auth';
 
-// @ts-ignore
-const Login = ({ navigation }) => {
+type propType = {
+  navigation: {
+    navigate: Function;
+  };
+};
+const Login = ({ navigation }: propType) => {
   const dispatch = useDispatch();
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');

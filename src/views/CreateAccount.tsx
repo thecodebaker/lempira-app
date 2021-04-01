@@ -10,8 +10,13 @@ import validator from 'validator';
 import User from '../Types/User';
 import { createAccount } from '../redux/thunks/accounts';
 
-// @ts-ignore
-const CreateAccount = ({ navigation }) => {
+type propType = {
+  navigation: {
+    navigate: Function;
+    goBack: Function;
+  };
+};
+const CreateAccount = ({ navigation }: propType) => {
   const dispatch = useDispatch();
   const colorScheme = useColorScheme();
   const user: User = useSelector((state: RootStateOrAny) => state.auth.user);

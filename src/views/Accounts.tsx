@@ -14,8 +14,12 @@ import Account from '../Types/Account';
 import User from '../Types/User';
 import { getAccounts, deleteAccount } from '../redux/thunks/accounts';
 
-// @ts-ignore
-const Accounts = ({ navigation }) => {
+type propType = {
+  navigation: {
+    navigate: Function;
+  };
+};
+const Accounts = ({ navigation }: propType) => {
   const dispatch = useDispatch();
   const colorScheme = useColorScheme();
   const user: User = useSelector((state: RootStateOrAny) => state.auth.user);
@@ -44,7 +48,14 @@ const Accounts = ({ navigation }) => {
           <ListItem
             key={account.accountId}
             bottomDivider
-            onPress={() => {}}
+            onPress={() => {
+              navigation.navigate({
+                name: 'account',
+                params: {
+                  account,
+                },
+              });
+            }}
             onLongPress={() => {
               Alert.alert(
                 'Borrar cuenta',
