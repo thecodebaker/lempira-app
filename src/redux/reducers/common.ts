@@ -9,7 +9,7 @@ const initialState = {
     EUR: '€',
   },
   exchanges: {},
-  lastUpdate: moment(),
+  lastUpdate: undefined,
 };
 const commonReducer = (state = initialState, action: Action<any>) => {
   switch (action.type) {
