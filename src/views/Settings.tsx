@@ -6,13 +6,24 @@ import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 
 import User from '../Types/User';
 import { SIGNOUT } from '../redux/thunks/auth';
-
-const Settings = () => {
+type propType = {
+  navigation: {
+    navigate: Function;
+  };
+};
+const Settings = ({ navigation }: propType) => {
   const colorScheme = useColorScheme();
 
   const user: User = useSelector((state: RootStateOrAny) => state.auth.user);
   const dispatch = useDispatch();
   const list = [
+    {
+      title: 'Categorías',
+      icon: 'tag',
+      onPress: () => {
+        navigation.navigate({ name: 'Categories' });
+      },
+    },
     {
       title: 'Cerrar Sesión',
       icon: 'cog',
