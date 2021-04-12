@@ -6,6 +6,7 @@ import {
   RefreshControl,
   StyleSheet,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 import { useColorScheme } from 'react-native-appearance';
 import { ListItem, Icon, ButtonGroup, Text } from 'react-native-elements';
@@ -116,8 +117,8 @@ const Movements = ({ navigation }: propType) => {
                       <ListItem.Title>{`${movement.accountName}`}</ListItem.Title>
                       <ListItem.Subtitle style={{ color: 'gray' }}>{`${moment(
                         movement.createdAt
-                      ).format('DD/MM/YYYY HH:mm')}`}</ListItem.Subtitle>
-                      {movement.note !== '' && (
+                      ).format('DD/MM/YYYY hh:mm A')}`}</ListItem.Subtitle>
+                      {movement.note !== '' && movement.note !== undefined && (
                         <ListItem.Subtitle style={{ color: 'gray' }}>
                           {movement.note}
                         </ListItem.Subtitle>
@@ -138,7 +139,12 @@ const Movements = ({ navigation }: propType) => {
           );
         })}
       </ScrollView>
-      <View style={style.TAB}>
+      <TouchableOpacity
+        style={style.TAB}
+        onPress={() => {
+          navigation.navigate({ name: 'CreateMovement' });
+        }}
+      >
         <Icon
           raised
           reverse
@@ -147,11 +153,8 @@ const Movements = ({ navigation }: propType) => {
           color="#37B94A"
           name="plus"
           type="material-community"
-          onPress={() => {
-            navigation.navigate({ name: 'create' });
-          }}
         />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -161,6 +164,7 @@ const style = StyleSheet.create({
   },
   mainContainer: { flex: 1 },
   TAB: {
+    borderRadius: 100,
     position: 'absolute',
     bottom: 5,
     right: 5,

@@ -5,6 +5,7 @@ import {
   ScrollView,
   RefreshControl,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 import { useColorScheme } from 'react-native-appearance';
 import { ListItem, Icon } from 'react-native-elements';
@@ -50,7 +51,7 @@ const Accounts = ({ navigation }: propType) => {
             bottomDivider
             onPress={() => {
               navigation.navigate({
-                name: 'account',
+                name: 'AccountInfo',
                 params: {
                   account,
                 },
@@ -98,7 +99,12 @@ const Accounts = ({ navigation }: propType) => {
           </ListItem>
         ))}
       </ScrollView>
-      <View style={style.TAB}>
+      <TouchableOpacity
+        style={style.TAB}
+        onPress={() => {
+          navigation.navigate({ name: 'CreateAccount' });
+        }}
+      >
         <Icon
           raised
           reverse
@@ -107,11 +113,8 @@ const Accounts = ({ navigation }: propType) => {
           color="#37B94A"
           name="plus"
           type="material-community"
-          onPress={() => {
-            navigation.navigate({ name: 'create' });
-          }}
         />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -122,6 +125,7 @@ const style = StyleSheet.create({
   },
   mainContainer: { flex: 1 },
   TAB: {
+    borderRadius: 100,
     position: 'absolute',
     bottom: 5,
     right: 5,

@@ -38,8 +38,10 @@ const CreateAccount = ({ navigation }: propType) => {
       case 'minimum': {
         return !validator.isEmpty(minimum) && !validator.isNumeric(minimum);
       }
+      default: {
+        return false;
+      }
     }
-    return false;
   };
   useEffect(() => {
     setDisabled(
