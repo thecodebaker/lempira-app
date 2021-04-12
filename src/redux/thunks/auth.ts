@@ -12,9 +12,10 @@ export const LOGIN = (email: string, password: string) => {
     return axios
       .post(`${BASE_URL}/auth/login`, { email, password })
       .then((resp) => {
+        const { token, name } = resp.data;
         dispatch({
           type: SET_USER,
-          payload: { token: resp.data.token, name: resp.data.name },
+          payload: { token, name },
         });
       })
       .catch((err) => {
