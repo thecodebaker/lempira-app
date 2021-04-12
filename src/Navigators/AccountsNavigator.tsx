@@ -1,19 +1,19 @@
-import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
 
 import AccountInfo from '../views/AccountInfo';
 import Accounts from '../views/Accounts';
 import CreateAccount from '../views/CreateAccount';
 const StackNavigator = createStackNavigator();
 
-const AccountNavigator = () => {
+const AccountsNavigator = () => {
   return (
     <StackNavigator.Navigator screenOptions={{ headerShown: false }}>
-      <StackNavigator.Screen name="main" component={Accounts} />
-      <StackNavigator.Screen name="account" component={AccountInfo} />
-      <StackNavigator.Screen name="create" component={CreateAccount} />
+      <StackNavigator.Screen name="Accounts" component={Accounts} />
+      <StackNavigator.Screen name="AccountInfo" component={AccountInfo} />
+      <StackNavigator.Screen name="CreateAccount" component={CreateAccount} />
     </StackNavigator.Navigator>
   );
 };
 
-export default AccountNavigator;
+export default AccountsNavigator;
