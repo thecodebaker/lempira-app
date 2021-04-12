@@ -1,5 +1,5 @@
 import { Action } from '../../Types/Action';
-import { SET_LAST_EXCHANGE, SET_EXCHANGES } from '../actions';
+import { SET_LAST_EXCHANGE, SET_EXCHANGES, SET_CATEGORIES } from '../actions';
 
 const initialState = {
   signs: {
@@ -8,6 +8,7 @@ const initialState = {
     EUR: '€',
   },
   exchanges: {},
+  categories: [],
   lastUpdate: undefined,
 };
 const commonReducer = (state = initialState, action: Action<any>) => {
@@ -24,6 +25,12 @@ const commonReducer = (state = initialState, action: Action<any>) => {
         exchanges: {
           ...action.payload,
         },
+      };
+    }
+    case SET_CATEGORIES: {
+      return {
+        ...state,
+        categories: [...action.payload],
       };
     }
     default: {
