@@ -16,6 +16,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import AccountsNavigator from './src/Navigators/AccountsNavigator';
 import MovementsNavigator from './src/Navigators/MovementsNavigator';
+import SettingsNavigator from './src/Navigators/SettingsNavigator';
 import User from './src/Types/User';
 import { getStore, getPersistor } from './src/redux/store';
 import { getAccounts } from './src/redux/thunks/accounts';
@@ -23,7 +24,6 @@ import { getExchanges } from './src/redux/thunks/common';
 import { getMovements } from './src/redux/thunks/movements';
 import { LightTheme, DarkTheme } from './src/themes';
 import Login from './src/views/Login';
-import Settings from './src/views/Settings';
 import Signup from './src/views/Signup';
 import Stats from './src/views/Stats';
 
@@ -122,7 +122,7 @@ const App = () => {
         <Tab.Screen name="Movimientos" component={MovementsNavigator} />
         <Tab.Screen name="Estadisticas" component={Stats} />
         <Tab.Screen name="Cuentas" component={AccountsNavigator} />
-        <Tab.Screen name="Ajustes" component={Settings} />
+        <Tab.Screen name="Ajustes" component={SettingsNavigator} />
       </Tab.Navigator>
     );
 };
