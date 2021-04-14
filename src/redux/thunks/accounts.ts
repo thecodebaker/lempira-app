@@ -21,10 +21,10 @@ export const getAccountTotalStats = (
         },
       })
       .then((resp) => {
-        console.log(resp.data);
-        setLabels(resp.data.labels);
-        setOutcomeData(resp.data.outcomeData);
-        setIncomeData(resp.data.incomeData);
+        const { labels, outcomeData, incomeData } = resp.data;
+        setLabels(labels);
+        setOutcomeData(outcomeData);
+        setIncomeData(incomeData);
       });
   };
 };

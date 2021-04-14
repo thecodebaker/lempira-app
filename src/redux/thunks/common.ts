@@ -60,7 +60,6 @@ export const addCategory = (
   callback: Function
 ) => {
   return async (dispatch: ThunkDispatch<object, object, Action<any>>) => {
-    console.log(BASE_URL, token);
     return axios
       .post(
         `${BASE_URL}/categories/`,
@@ -81,7 +80,6 @@ export const addCategory = (
 
 export const removeCategory = (token: string, categoryId: string) => {
   return async (dispatch: ThunkDispatch<object, object, Action<any>>) => {
-    console.log(BASE_URL, token);
     return axios
       .delete(`${BASE_URL}/categories/`, {
         data: {
