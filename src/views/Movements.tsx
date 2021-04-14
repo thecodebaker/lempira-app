@@ -13,6 +13,7 @@ import { ListItem, Icon, ButtonGroup, Text } from 'react-native-elements';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
 
 import 'moment/locale/es';
+import Account from '../Types/Account';
 import Movement from '../Types/Movement';
 import User from '../Types/User';
 import AccordionItem from '../components/AccordionItem';
@@ -32,6 +33,9 @@ const Movements = ({ navigation }: propType) => {
   const signs: any = useSelector((state: RootStateOrAny) => state.common.signs);
   const movements: Movement[] = useSelector(
     (state: RootStateOrAny) => state.movements.movements
+  );
+  const accounts: Account[] = useSelector(
+    (state: RootStateOrAny) => state.accounts.accounts
   );
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
@@ -157,8 +161,10 @@ const Movements = ({ navigation }: propType) => {
         onPress={() => {
           navigation.navigate({ name: 'CreateMovement' });
         }}
+        disabled={accounts.length === 0}
       >
         <Icon
+          disabled={accounts.length === 0}
           raised
           reverse
           size={24}

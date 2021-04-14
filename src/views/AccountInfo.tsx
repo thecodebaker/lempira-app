@@ -100,7 +100,7 @@ const AccountInfo = ({ route }: propType) => {
               />
             </View>
             <View style={{ flex: 3 }}>
-              <Text h4>No hay datos suficientes para mostrar esta grafica</Text>
+              <Text h4>No hay suficientes datos para mostrar esta grafica</Text>
             </View>
           </View>
         )}
@@ -143,7 +143,7 @@ const AccountInfo = ({ route }: propType) => {
               />
             </View>
             <View style={{ flex: 3 }}>
-              <Text h4>No hay datos suficientes para mostrar esta grafica</Text>
+              <Text h4>No hay suficientes datos para mostrar esta grafica</Text>
             </View>
           </View>
         )}

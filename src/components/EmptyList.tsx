@@ -11,7 +11,7 @@ const EmptyList = ({ texto }: propType) => {
       <View style={{ flex: 1 }}>
         <Icon size={64} type="material-community" name="emoticon-sad-outline" />
       </View>
-      <View style={{ flex: 3 }}>
+      <View style={{ flex: 2 }}>
         <Text h4>{texto}</Text>
       </View>
     </View>

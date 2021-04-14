@@ -7,6 +7,7 @@ import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import validator from 'validator';
 
 import Account from '../Types/Account';
+import Category from '../Types/Category';
 import User from '../Types/User';
 import { createMovement } from '../redux/thunks/movements';
 
@@ -26,12 +27,18 @@ const CreateAccount = ({ navigation }: propType) => {
   const accounts: Account[] = useSelector(
     (state: RootStateOrAny) => state.accounts.accounts
   );
+  const categories: Category[] = useSelector(
+    (state: RootStateOrAny) => state.common.categories
+  );
   const [note, setNote] = useState('');
   const [account, setAccount] = useState(
     accounts.length !== 0 ? accounts[0].accountId : ''
   );
   const [currency, setCurrency] = useState(
     accounts.length !== 0 ? accounts[0].currency : 'HNL'
+  );
+  const [category, setCategory] = useState(
+    categories.find((a) => a.name === 'Sin Categoria')?._id || categories[0]._id
   );
   const [amount, setAmount] = useState('');
   const [disabled, setDisabled] = useState(true);
@@ -127,11 +134,35 @@ const CreateAccount = ({ navigation }: propType) => {
         <Picker.Item label="Dolar" value="USD" />
         <Picker.Item label="Euro" value="EUR" />
       </Picker>
+      <Text style={{ fontSize: 16, fontWeight: 'bold', marginLeft: 12 }}>
+        Categoria del movimiento
+      </Text>
+      <Picker
+        selectedValue={category}
+        onValueChange={(value) => {
+          setCategory(value.toString());
+        }}
+        dropdownIconColor={colorScheme === 'dark' ? 'white' : 'gray'}
+        itemStyle={{
+          color: colorScheme === 'dark' ? 'white' : 'gray',
+        }}
+        style={{
+          color: colorScheme === 'dark' ? 'white' : 'gray',
+        }}
+      >
+        {categories.map((category) => (
+          <Picker.Item
+            key={category._id}
+            label={category.name}
+            value={category._id}
+          />
+        ))}
+      </Picker>
       <Input
         labelStyle={{
           color: colorScheme === 'dark' ? 'white' : 'gray',
         }}
-        label="Nota en el movimiento"
+        label="Nota para el movimiento"
         value={note}
         onChangeText={(text) => {
           setNote(text);
@@ -154,6 +185,7 @@ const CreateAccount = ({ navigation }: propType) => {
             createMovement(
               user.token,
               account,
+              category,
               finalAmount,
               selectedIndex === 0,
               note,
@@ -186,16 +218,6 @@ const CreateAccount = ({ navigation }: propType) => {
 
 const style = StyleSheet.create({
   mainContainer: { flex: 1 },
-  section: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  paragraph: {
-    fontSize: 15,
-  },
-  checkbox: {
-    margin: 8,
-  },
 });
 
 export default CreateAccount;

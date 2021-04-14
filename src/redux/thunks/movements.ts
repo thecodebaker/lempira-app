@@ -34,6 +34,7 @@ export const getMovements = (token: string, callback?: Function) => {
 export const createMovement = (
   token: string,
   accountId: string,
+  categoryId: string,
   amount: number,
   isIncome: boolean,
   note: string,
@@ -43,7 +44,7 @@ export const createMovement = (
     return axios
       .post(
         `${BASE_URL}/movements/`,
-        { accountId, amount, isIncome, note },
+        { accountId, categoryId, amount, isIncome, note },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -52,12 +53,13 @@ export const createMovement = (
       )
       .then((resp) => {
         // const { movements } = resp.data;
+        console.log(resp.data);
         dispatch(getAccounts(token));
         dispatch(getMovements(token));
         callback();
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response);
       });
   };
 };
