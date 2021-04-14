@@ -1,17 +1,14 @@
-// @ts-ignore
-import { BASE_URL } from '@env';
-import axios from 'axios';
 import moment from 'moment';
 import 'moment/locale/es';
 import React, { useEffect, useState } from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, StyleSheet } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
-import { Text } from 'react-native-elements';
+import { Text, Icon } from 'react-native-elements';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import { getAccountTotalStats } from '../redux/thunks/accounts';
 
 import Account from '../Types/Account';
 import User from '../Types/User';
+import { getAccountTotalStats } from '../redux/thunks/accounts';
 
 type propType = {
   route: {
@@ -64,51 +61,111 @@ const AccountInfo = ({ route }: propType) => {
   };
 
   return (
-    <View>
-      <Text h3>Total de Entrada</Text>
-      <LineChart
-        data={{
-          labels,
-          datasets: [
-            {
-              data: incomeData,
-            },
-          ],
-        }}
-        width={Dimensions.get('window').width}
-        height={220}
-        yAxisLabel={`${signs[account.currency]} `}
-        yAxisInterval={100}
-        chartConfig={chartConfig}
-        bezier
-        style={{
-          marginVertical: 8,
-          borderRadius: 16,
-        }}
-      />
-      <Text h3>Total de Salida</Text>
-      <LineChart
-        data={{
-          labels,
-          datasets: [
-            {
-              data: outcomeData,
-            },
-          ],
-        }}
-        width={Dimensions.get('window').width}
-        height={220}
-        yAxisLabel={`${signs[account.currency]} `}
-        yAxisInterval={100}
-        chartConfig={chartConfig}
-        bezier
-        style={{
-          marginVertical: 8,
-          borderRadius: 16,
-        }}
-      />
+    <View style={styles.mainContainer}>
+      <View style={styles.chartContainer}>
+        <Text h3 style={styles.title}>
+          Total de Entrada
+        </Text>
+        {labels.length !== 0 && incomeData.length !== 0 ? (
+          <>
+            <LineChart
+              data={{
+                labels,
+                datasets: [
+                  {
+                    data: incomeData,
+                  },
+                ],
+              }}
+              width={Dimensions.get('window').width * 0.9}
+              height={Dimensions.get('window').height * 0.25}
+              yAxisLabel={`${signs[account.currency]} `}
+              yAxisInterval={100}
+              chartConfig={chartConfig}
+              bezier
+              style={{
+                marginVertical: 8,
+                alignItems: 'center',
+                borderRadius: 16,
+              }}
+            />
+          </>
+        ) : (
+          <View style={styles.noDataContainer}>
+            <View style={{ flex: 1 }}>
+              <Icon
+                size={32}
+                type="material-community"
+                name="emoticon-sad-outline"
+              />
+            </View>
+            <View style={{ flex: 3 }}>
+              <Text h4>No hay datos suficientes para mostrar esta grafica</Text>
+            </View>
+          </View>
+        )}
+      </View>
+      <View style={styles.chartContainer}>
+        <Text h3 style={styles.title}>
+          Total de Salida
+        </Text>
+        {labels.length !== 0 && outcomeData.length !== 0 ? (
+          <>
+            <LineChart
+              data={{
+                labels,
+                datasets: [
+                  {
+                    data: outcomeData,
+                  },
+                ],
+              }}
+              width={Dimensions.get('window').width * 0.9}
+              height={Dimensions.get('window').height * 0.25}
+              yAxisLabel={`${signs[account.currency]} `}
+              yAxisInterval={100}
+              chartConfig={chartConfig}
+              bezier
+              style={{
+                marginVertical: 8,
+                alignItems: 'center',
+                borderRadius: 16,
+              }}
+            />
+          </>
+        ) : (
+          <View style={styles.noDataContainer}>
+            <View style={{ flex: 1 }}>
+              <Icon
+                size={32}
+                type="material-community"
+                name="emoticon-sad-outline"
+              />
+            </View>
+            <View style={{ flex: 3 }}>
+              <Text h4>No hay datos suficientes para mostrar esta grafica</Text>
+            </View>
+          </View>
+        )}
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+  },
+  title: {
+    width: Dimensions.get('window').width * 0.9,
+  },
+  chartContainer: { alignItems: 'center' },
+  noDataContainer: {
+    height: Dimensions.get('window').height * 0.25,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default AccountInfo;

@@ -16,6 +16,7 @@ import 'moment/locale/es';
 import Movement from '../Types/Movement';
 import User from '../Types/User';
 import AccordionItem from '../components/AccordionItem';
+import EmptyList from '../components/EmptyList';
 import { deleteMovement, getMovements } from '../redux/thunks/movements';
 
 type propType = {
@@ -61,84 +62,96 @@ const Movements = ({ navigation }: propType) => {
   }, []);
   return (
     <View style={style.mainContainer}>
-      <Text h4>Separar movimientos por:</Text>
-      <ButtonGroup
-        onPress={(s) => setSelectedIndex(s)}
-        selectedIndex={selectedIndex}
-        buttons={buttons}
-      />
-      <ScrollView
-        style={style.scrollContainer}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        {segmentedMoves.map((segment) => {
-          return (
-            <AccordionItem title={segment.name} key={segment.id}>
-              {movements
-                .filter((m) =>
-                  selectedIndex === 0
-                    ? moment(m.createdAt).month() === segment.id
-                    : segment.id === m.accountId
-                )
-                .map((movement) => (
-                  <ListItem
-                    key={movement.movementId}
-                    bottomDivider
-                    onPress={() => {}}
-                    onLongPress={() => {
-                      Alert.alert(
-                        'Borrar movimiento',
-                        '¿Seguro que querés borrar este movimiento ?',
-                        [
-                          {
-                            text: 'Si',
-                            onPress: () => {
-                              dispatch(
-                                deleteMovement(user.token, movement.movementId)
-                              );
-                            },
-                          },
-                          { text: 'No' },
-                        ]
-                      );
-                    }}
-                  >
-                    <Icon
-                      type="material-community"
-                      name={`${
-                        movement.isIncome ? 'arrow-left' : 'arrow-right'
-                      }`}
-                      size={32}
-                      color={movement.isIncome ? '#37B94A' : '#B34A37'}
-                    />
-                    <ListItem.Content>
-                      <ListItem.Title>{`${movement.accountName}`}</ListItem.Title>
-                      <ListItem.Subtitle style={{ color: 'gray' }}>{`${moment(
-                        movement.createdAt
-                      ).format('DD/MM/YYYY hh:mm A')}`}</ListItem.Subtitle>
-                      {movement.note !== '' && movement.note !== undefined && (
-                        <ListItem.Subtitle style={{ color: 'gray' }}>
-                          {movement.note}
+      {movements.length !== 0 ? (
+        <>
+          <Text h4>Separar movimientos por:</Text>
+          <ButtonGroup
+            onPress={(s) => setSelectedIndex(s)}
+            selectedIndex={selectedIndex}
+            buttons={buttons}
+          />
+          <ScrollView
+            style={style.scrollContainer}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            {segmentedMoves.map((segment) => {
+              return (
+                <AccordionItem title={segment.name} key={segment.id}>
+                  {movements
+                    .filter((m) =>
+                      selectedIndex === 0
+                        ? moment(m.createdAt).month() === segment.id
+                        : segment.id === m.accountId
+                    )
+                    .map((movement) => (
+                      <ListItem
+                        key={movement.movementId}
+                        bottomDivider
+                        onPress={() => {}}
+                        onLongPress={() => {
+                          Alert.alert(
+                            'Borrar movimiento',
+                            '¿Seguro que querés borrar este movimiento ?',
+                            [
+                              {
+                                text: 'Si',
+                                onPress: () => {
+                                  dispatch(
+                                    deleteMovement(
+                                      user.token,
+                                      movement.movementId
+                                    )
+                                  );
+                                },
+                              },
+                              { text: 'No' },
+                            ]
+                          );
+                        }}
+                      >
+                        <Icon
+                          type="material-community"
+                          name={`${
+                            movement.isIncome ? 'arrow-left' : 'arrow-right'
+                          }`}
+                          size={32}
+                          color={movement.isIncome ? '#37B94A' : '#B34A37'}
+                        />
+                        <ListItem.Content>
+                          <ListItem.Title>{`${movement.accountName}`}</ListItem.Title>
+                          <ListItem.Subtitle
+                            style={{ color: 'gray' }}
+                          >{`${moment(movement.createdAt).format(
+                            'DD/MM/YYYY hh:mm A'
+                          )}`}</ListItem.Subtitle>
+                          {movement.note !== '' &&
+                            movement.note !== undefined && (
+                              <ListItem.Subtitle style={{ color: 'gray' }}>
+                                {movement.note}
+                              </ListItem.Subtitle>
+                            )}
+                        </ListItem.Content>
+                        <ListItem.Subtitle
+                          style={{
+                            color: colorScheme === 'dark' ? 'white' : 'gray',
+                          }}
+                        >
+                          {`${
+                            signs[movement.currency || 'HNL']
+                          } ${movement.amount.toFixed(2)}`}
                         </ListItem.Subtitle>
-                      )}
-                    </ListItem.Content>
-                    <ListItem.Subtitle
-                      style={{
-                        color: colorScheme === 'dark' ? 'white' : 'gray',
-                      }}
-                    >
-                      {`${
-                        signs[movement.currency || 'HNL']
-                      } ${movement.amount.toFixed(2)}`}
-                    </ListItem.Subtitle>
-                  </ListItem>
-                ))}
-            </AccordionItem>
-          );
-        })}
-      </ScrollView>
+                      </ListItem>
+                    ))}
+                </AccordionItem>
+              );
+            })}
+          </ScrollView>
+        </>
+      ) : (
+        <EmptyList texto="No se encontraron movimientos de tus cuentas" />
+      )}
       <TouchableOpacity
         style={style.TAB}
         onPress={() => {

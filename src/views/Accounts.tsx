@@ -13,6 +13,7 @@ import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 
 import Account from '../Types/Account';
 import User from '../Types/User';
+import EmptyList from '../components/EmptyList';
 import { getAccounts, deleteAccount } from '../redux/thunks/accounts';
 
 type propType = {
@@ -39,66 +40,70 @@ const Accounts = ({ navigation }: propType) => {
 
   return (
     <View style={style.mainContainer}>
-      <ScrollView
-        style={style.scrollContainer}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        {accounts.map((account) => (
-          <ListItem
-            key={account.accountId}
-            bottomDivider
-            onPress={() => {
-              navigation.navigate({
-                name: 'AccountInfo',
-                params: {
-                  account,
-                },
-              });
-            }}
-            onLongPress={() => {
-              Alert.alert(
-                'Borrar cuenta',
-                `¿Seguro que querés borrar la cuenta ${account.name}?`,
-                [
-                  {
-                    text: 'Si',
-                    onPress: () => {
-                      dispatch(deleteAccount(user.token, account.accountId));
-                    },
+      {accounts.length !== 0 ? (
+        <ScrollView
+          style={style.scrollContainer}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          {accounts.map((account) => (
+            <ListItem
+              key={account.accountId}
+              bottomDivider
+              onPress={() => {
+                navigation.navigate({
+                  name: 'AccountInfo',
+                  params: {
+                    account,
                   },
-                  { text: 'No' },
-                ]
-              );
-            }}
-          >
-            <Icon
-              type="material-community"
-              name={'cash-multiple'}
-              size={32}
-              color={colorScheme === 'dark' ? 'white' : 'gray'}
-            />
-            <ListItem.Content>
-              <ListItem.Title>{account.name}</ListItem.Title>
-              {account.hasMinimum && (
-                <ListItem.Subtitle style={{ color: 'gray' }}>
-                  {`Balance Mínimo: ${
-                    signs[account.currency]
-                  } ${account.minimum.toFixed(2)}`}
-                </ListItem.Subtitle>
-              )}
-            </ListItem.Content>
-            <ListItem.Subtitle
-              style={{
-                color: account.balance < 0 ? '#B34A37' : '#37B94A',
+                });
+              }}
+              onLongPress={() => {
+                Alert.alert(
+                  'Borrar cuenta',
+                  `¿Seguro que querés borrar la cuenta ${account.name}?`,
+                  [
+                    {
+                      text: 'Si',
+                      onPress: () => {
+                        dispatch(deleteAccount(user.token, account.accountId));
+                      },
+                    },
+                    { text: 'No' },
+                  ]
+                );
               }}
             >
-              {`${signs[account.currency]} ${account.balance.toFixed(2)}`}
-            </ListItem.Subtitle>
-          </ListItem>
-        ))}
-      </ScrollView>
+              <Icon
+                type="material-community"
+                name={'cash-multiple'}
+                size={32}
+                color={colorScheme === 'dark' ? 'white' : 'gray'}
+              />
+              <ListItem.Content>
+                <ListItem.Title>{account.name}</ListItem.Title>
+                {account.hasMinimum && (
+                  <ListItem.Subtitle style={{ color: 'gray' }}>
+                    {`Balance Mínimo: ${
+                      signs[account.currency]
+                    } ${account.minimum.toFixed(2)}`}
+                  </ListItem.Subtitle>
+                )}
+              </ListItem.Content>
+              <ListItem.Subtitle
+                style={{
+                  color: account.balance < 0 ? '#B34A37' : '#37B94A',
+                }}
+              >
+                {`${signs[account.currency]} ${account.balance.toFixed(2)}`}
+              </ListItem.Subtitle>
+            </ListItem>
+          ))}
+        </ScrollView>
+      ) : (
+        <EmptyList texto="No se encontraron cuentas para tu usuario" />
+      )}
       <TouchableOpacity
         style={style.TAB}
         onPress={() => {
